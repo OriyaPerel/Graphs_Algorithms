@@ -26,6 +26,14 @@ TEST_CASE("Test isConnected")
     CHECK(Algorithms::isConnected(g) == false);
 }
 
+TEST_CASE("empty graph")
+{
+    ariel::Graph g;
+    CHECK_THROWS_WITH(Algorithms::isBipartite(g), "Invalid graph: The graph is empty");
+    CHECK_THROWS_WITH(Algorithms::isConnected(g), "Invalid graph: The graph is empty");
+    CHECK_THROWS_WITH(Algorithms::shortestPath(g, 1, 2) ,"Invalid graph: The graph is empty");
+}
+
 TEST_CASE("Test shortestPath")
 {
     ariel::Graph g;
