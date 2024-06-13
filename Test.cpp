@@ -34,7 +34,7 @@ TEST_CASE("Test shortestPath")
         {1, 0, 1},
         {0, 1, 0}};
     g.loadGraph(graph);
-    CHECK(Algorithms::shortestPath(g, 0, 2) == 1);
+    CHECK(Algorithms::shortestPath(g, 0, 2) == "0->1->2");
 
     vector<vector<int>> graph2 = {
         {0, 1, 1, 0, 0},
@@ -43,7 +43,7 @@ TEST_CASE("Test shortestPath")
         {0, 0, 1, 0, 0},
         {0, 0, 0, 0, 0}};
     g.loadGraph(graph2);
-    CHECK(Algorithms::shortestPath(g, 0, 4) == 0);
+    CHECK(Algorithms::shortestPath(g, 0, 4) == "No path found");
 }
 TEST_CASE("Test isContainsCycle")
 {
@@ -137,7 +137,7 @@ TEST_CASE("infinity shortestPath")
     g.loadGraph(graph1);
 
     CHECK(Algorithms::negativeCycle(g) == "Negative cycle found! Cycle: 1 0 1 ");
-    CHECK(Algorithms::shortestPath(g, 0, 1) == 0);
+    CHECK(Algorithms::shortestPath(g, 0, 1) == "No path found");
 }
 
 TEST_CASE("shortestPath from vertex to itself")
@@ -148,18 +148,7 @@ TEST_CASE("shortestPath from vertex to itself")
         {5, 0}};
     g.loadGraph(graph1);
 
-    CHECK(Algorithms::shortestPath(g, 0, 0) == 1);
-}
-
-TEST_CASE("shortestPath from vertex to itself")
-{
-    ariel::Graph g;
-    vector<vector<int>> graph1 = {
-        {0, 5},
-        {5, 0}};
-    g.loadGraph(graph1);
-
-    CHECK(Algorithms::shortestPath(g, 0, 0) == 1);
+    CHECK(Algorithms::shortestPath(g, 0, 0) == "this is the same vertex");
 }
 TEST_CASE("graph without edges")
 {
@@ -169,7 +158,7 @@ TEST_CASE("graph without edges")
         {0, 0}};
     g.loadGraph(graph1);
 
-    CHECK(Algorithms::shortestPath(g, 0, 1) == 0);
+    CHECK(Algorithms::shortestPath(g, 0, 1) == "No path found");
     CHECK(Algorithms::isConnected(g) == 0);
 }
 
@@ -180,8 +169,7 @@ TEST_CASE("shortest path between vertes that not existent")
         {0, 0},
         {0, 0}};
     g.loadGraph(graph1);
-
-    CHECK(Algorithms::shortestPath(g, 0, 3) == 0);
+    CHECK_THROWS_WITH(Algorithms::shortestPath(g, 0, 3), "Invalid vertex: The vertex does not exist");
 }
 TEST_CASE("empty graph")
 {
@@ -254,6 +242,16 @@ TEST_CASE("undirected ContainsCycle")
     CHECK(Algorithms::isContainsCycle(g1) == "Cycle: 0 1 2 0 ");
 }
 
+TEST_CASE("graph that all the vertice are not connected")
+{
+    ariel::Graph g;
+    vector<vector<int>> graph1 = {
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0}};
+    g.loadGraph(graph1);
 
-
-
+    CHECK(Algorithms::isConnected(g) == 0);
+    CHECK(Algorithms::isContainsCycle(g) == "No cycle found");
+    CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0, 1, 2}, B={}");
+}
