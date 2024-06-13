@@ -6,8 +6,8 @@
 
 namespace ariel
 {
-    Graph::Graph()
-    { // default constructor
+    Graph::Graph() // the default is directed graph
+    {
         this->directed = true;
     }
 
@@ -16,25 +16,28 @@ namespace ariel
         this->directed = directed;
     }
 
-    const std::vector<std::vector<int>> &Graph::getGraph() const 
+    const std::vector<std::vector<int>> &Graph::getGraph() const // return the adjacency matrix
     {
-        return this->g;
+        return this->matrix;
     }
 
-    bool Graph::isdirected()const 
+    bool Graph::isdirected() const // return if the graph is directed or not
     {
         return this->directed;
     }
 
-    int Graph::getNumEdge()const
+    int Graph::getNumEdge() const
+    // return the number of edges in the graph,
+    // if the graph is directed return the number of edges,
+    // if is undirected return the number of edges divided by 2
     {
         int count = 0;
-        int V = this->col;
+        int V = this->numVertices;
         for (size_t i = 0; i < V; i++)
         {
             for (size_t j = 0; j < V; j++)
             {
-                if (g[i][j] != 0)
+                if (matrix[i][j] != 0)
                 {
                     count++;
                 }
@@ -47,22 +50,21 @@ namespace ariel
         return (count / 2);
     }
 
-    size_t Graph::getNumVertices()const 
+    size_t Graph::getNumVertices() const
     {
-        return this->g.size();
+        return (size_t)this->numVertices;
     }
 
     void Graph::loadGraph(std::vector<std::vector<int>> ingraph)
     {
-        if (ingraph.empty())
+        if (ingraph.empty()) // check if the graph is empty
         {
             throw std::invalid_argument("Invalid graph: The graph is empty");
             return;
         }
         size_t r = ingraph.size();
-        size_t c = ingraph[0].size();
 
-        for (size_t i = 0; i < r; ++i)
+        for (size_t i = 0; i < r; ++i) // check if the graph is a square matrix
         {
             if (ingraph[i].size() != r)
             {
@@ -70,34 +72,33 @@ namespace ariel
                 return;
             }
         }
-        this->g = ingraph;
-        this->row = r;
-        this->col = c;
+        this->matrix = ingraph;
+        this->numVertices = r;
     }
 
     void Graph::printGraph()
     {
         int count = 0;
-        int V = this->col;
+        int V = this->numVertices;
         for (size_t i = 0; i < V; i++)
         {
             for (size_t j = 0; j < V; j++)
             {
-                std::cout << g[i][j] << " ";
-                if (g[i][j] != 0)
+                std::cout << matrix[i][j] << " ";
+                if (matrix[i][j] != 0)
                 {
                     count++;
                 }
             }
             std::cout << std::endl;
         }
-        if (this->directed == true)
+        if (this->directed == true) // print the number of edges in the graph for directed graph
         {
-            std::cout << "Graph with " << row << " vertices and " << count << " edges" << std::endl;
+            std::cout << "Graph with " << this->numVertices << " vertices and " << count << " edges" << std::endl;
         }
-        else
+        else // print the number of edges in the graph for undirected graph
         {
-            std::cout << "Graph with " << row << " vertices and " << count / 2 << " edges" << std::endl;
+            std::cout << "Graph with " << this->numVertices << " vertices and " << count / 2 << " edges" << std::endl;
         }
     }
 
