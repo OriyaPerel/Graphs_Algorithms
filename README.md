@@ -1,4 +1,4 @@
-# מטלה 1 - גרפים 
+# Graph Algorithms
 
 id:322522806
 email:oriyaperel18@gmail.com
